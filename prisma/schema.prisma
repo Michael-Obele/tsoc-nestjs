@@ -14,6 +14,11 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL_DEV")
+// }
+
 model UserNest {
   id    Int     @id @default(autoincrement())
   email String  @unique
@@ -32,7 +37,6 @@ model Post {
 
 model Todo {
   id          Int        @id @default(autoincrement())
-  // title       String
   description String?
   task        String
   status      TaskStatus
@@ -43,4 +47,11 @@ model Todo {
 enum TaskStatus {
   DONE
   ACTIVE
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  name     String
 }
