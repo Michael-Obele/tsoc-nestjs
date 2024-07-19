@@ -23,7 +23,6 @@ export class TodoService {
   }
 
   async findAll() {
-
     return await this.databaseService.todo.findMany();
   }
 
@@ -41,13 +40,6 @@ export class TodoService {
 
 
   async update(id: number, updateTodoDto: UpdateTodoDto) {
-
-    // let data: Prisma.TodoUpdateInput = {
-    //   description: updateTodoDto.description,
-    //   task: updateTodoDto.task,
-    //   status: "ACTIVE" || "DONE"
-    // }
-    // console.log(data)
     return this.databaseService.todo.update({
       where: {
         id: id
