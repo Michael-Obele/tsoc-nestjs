@@ -1,30 +1,35 @@
-import { BadGatewayException, Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable, NotFoundException } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { DatabaseService } from 'src/database/database.service';
 import * as bcrypt from 'bcrypt'
 import { LoginDto } from './dto/login.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly dataservice: DatabaseService
+    private readonly dataservice: DatabaseService,
+    private readonly jwtservice: JwtService
   ) { }
 
   async login(loginData: LoginDto) {
+    const { email, password } = loginData;
     const user = await this.dataservice.user.findFirst({
       where: {
         email: email
       }
-    });
+    })
     if (!user) {
-      throw new BadGatewayException('User not found');
+      throw new NotFoundException("No user")
     }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      throw new BadGatewayException('Invalid password');
+    const validatePassword = await bcrypt.compare(password, user.password)
+    if (!validatePassword) {
+      throw new NotFoundException("Wrong Password")
     }
-    return user;
+    return {
+      token: this.jwtservice.sign({ email })
+    }
   }
   async register(registerData: RegisterUserDto) {
     const user = await this.dataservice.user.findFirst(

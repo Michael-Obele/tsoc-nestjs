@@ -23,6 +23,7 @@ export class TodoService {
   }
 
   async findAll() {
+
     return await this.databaseService.todo.findMany();
   }
 

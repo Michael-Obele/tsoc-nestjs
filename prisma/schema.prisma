@@ -14,11 +14,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL_DEV")
-// }
-
 model UserNest {
   id    Int     @id @default(autoincrement())
   email String  @unique

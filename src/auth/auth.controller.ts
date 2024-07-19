@@ -5,12 +5,12 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+    constructor(private readonly authService: AuthService) { }
 
-  @Post()
-  create(@Body() registerData: RegisterUserDto) {
-    return this.authService.register(registerData);
-  }
+    @Post()
+    create(@Body() registerData: RegisterUserDto) {
+        return this.authService.register(registerData);
+    }
 
 
 }
