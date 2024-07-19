@@ -6,7 +6,7 @@ import { ExtractJwt } from 'passport-jwt';
 
 
 @Injectable()
-// 
+
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
         private readonly databaseService: DatabaseService
@@ -14,14 +14,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: "Secret "
+            secretOrKey: "Secret"
         })
     }
 
-    async validate(payload: { userEmail: string }) {
+    async validate(payload: { email: string }) {
+        console.log("Payload: ", payload)
         const user = await this.databaseService.user.findUnique({
             where: {
-                email: payload.userEmail
+                email: payload.email
             },
         })
         return user;
